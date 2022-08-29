@@ -65,6 +65,16 @@ const Wrapper = styled.div`
     border-radius:0.5rem;
     cursor:pointer;
 
+    @media (max-width:769px){
+        height:90px;
+        width:90px;
+    }
+
+    @media (max-width:426px){
+        height:45px;
+        width:45px;
+    }
+
     .flip-card-wrapper{
         width:100%;
         height:100%;

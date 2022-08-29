@@ -18,7 +18,6 @@ const Board = () => {
     const [gameStart,setGameStart] = useState(false);
 
     const [duration,setDuration] = useState(120);
-    // const duration = level === 1 ? 150 : level === 2 ? 120 : 90;
     const [timeLeft,setTimeLeft] = useState(duration);
 
     useEffect(() => {
@@ -59,7 +58,6 @@ const Board = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            console.log(timeLeft,duration)
             if(!gameStart || timeLeft <= 0) return;
             setTimeLeft(timeLeft - 0.25);
         }, 250);
@@ -71,11 +69,11 @@ const Board = () => {
         {
             validCards.length === cards.length/2 && gameStart
             ?
-            <span className="success-title">Horay!! You've finished</span>
+            <span className="success-title">{level === 1 ? 'Awww, let me give you a candy!' : level === 2 ? 'Horray! You have finished the game' :'Excellent! You are rock!'}</span>
             :
             timeLeft === 0 && validCards.length < cards.length/2 && gameStart
             &&
-            <span className="success-title fail">You can't beat this easy game ??</span>
+            <span className="success-title fail">{level === 1 ? "Awww, do not cry my sweet heart" : level === 2 ? "You can't beat this game ??" : "Let's try again. Don't worry about it"}</span>
         }
 
         {
@@ -129,7 +127,14 @@ const Board = () => {
             :
             !gameStart
             ?
-            <div className="restart-btn" onClick={()=>setGameStart(true)}>
+            <div className="restart-btn" onClick={()=>{
+                setGameStart(true);
+                setValidCards([]);
+                setTestCards([]);
+                setInProcess(false);
+                setClearBoard(false);
+                setTimeLeft(duration);
+            }}>
                 <span>Start game</span>
             </div>
             :
@@ -173,6 +178,13 @@ const Wrapper = styled.div`
         color:green;
         font-weight:500;
         font-size:1.5rem;
+        text-align:center;
+        @media (max-width:769px){
+            font-size:1.2rem;
+        }
+        @media (max-width:426px){
+            font-size:1rem;
+        }
     }
     .success-title.fail{
         color:red;
@@ -182,7 +194,7 @@ const Wrapper = styled.div`
         display:grid;
         width:auto;
         grid-template-columns:repeat(4,1fr);
-        height:400px;
+        height:auto;
         gap:0.5rem;
     }
     .board.normal{
@@ -195,11 +207,14 @@ const Wrapper = styled.div`
 
     .progress-bar-wrapper{
         height:30px;
-        width:100%;
+        width:80%;
         background:lightgrey;
         border:4px solid grey;
         border-radius:2rem;
         overflow:hidden;
+        @media (max-width:426px){
+            height:20px;
+        }
         .progress-bar{
             height:100%;
             background-image: linear-gradient(to right, #2B7A0B, #5BB318,#7DCE13);
@@ -211,6 +226,11 @@ const Wrapper = styled.div`
         align-items:center;
         justify-content:space-around;
         gap:1rem;
+
+        @media (max-width:426px){
+            flex-direction:column;
+            gap:0.5rem;
+        }
         .difficulty-item{
             cursor:pointer;
             padding:0.5rem;
